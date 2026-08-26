@@ -59,6 +59,51 @@ app.post('/tasks', (req, res) => {
   res.status(201).json(newTask);
 });
 
+// PUT /tasks/:id - update an existing task
+app.put('/tasks/:id', (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const task = tasks.find(t => t.id === id);
+
+  if (!task) {
+    return res.status(404).json({ error: `Task ${req.params.id} not found` });
+  }
+
+  const { title, done } = req.body || {};
+
+  if (title === undefined && done === undefined) {
+    return res.status(400).json({ error: 'Request body must contain title or done' });
+  }
+
+  if (title !== undefined) {
+    if (typeof title !== 'string' || title.trim() === '') {
+      return res.status(400).json({ error: 'Title cannot be empty' });
+    }
+    task.title = title.trim();
+  }
+
+  if (done !== undefined) {
+    if (typeof done !== 'boolean') {
+      return res.status(400).json({ error: 'Done must be a boolean (true/false)' });
+    }
+    task.done = done;
+  }
+
+  res.json(task);
+});
+
+// DELETE /tasks/:id - delete a task by ID
+app.delete('/tasks/:id', (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const index = tasks.findIndex(t => t.id === id);
+
+  if (index === -1) {
+    return res.status(404).json({ error: `Task ${req.params.id} not found` });
+  }
+
+  tasks.splice(index, 1);
+  res.status(204).send();
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
