@@ -1,0 +1,183 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Task API (SQLite)",
+    "version": "2.0.0",
+    "description": "Persistent RESTful CRUD API powered by Node.js, Express, and SQLite (better-sqlite3)."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local Development Server"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "API Metadata",
+        "responses": {
+          "200": {
+            "description": "API metadata information"
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health Check",
+        "responses": {
+          "200": {
+            "description": "Server & Database status"
+          }
+        }
+      }
+    },
+    "/tasks": {
+      "get": {
+        "summary": "Get all tasks",
+        "parameters": [
+          {
+            "name": "done",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Filter by completed status (true/false)"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search tasks by title (SQL LIKE operator)"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["title", "created_at"]
+            },
+            "description": "Sort order (title or created_at)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of tasks from SQLite"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new task",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["title"],
+                "properties": {
+                  "title": { "type": "string", "example": "Buy groceries" },
+                  "done": { "type": "boolean", "example": false }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Task created successfully"
+          },
+          "400": {
+            "description": "Invalid input / title required"
+          }
+        }
+      }
+    },
+    "/tasks/{id}": {
+      "get": {
+        "summary": "Get task by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Task details" },
+          "404": { "description": "Task not found" }
+        }
+      },
+      "put": {
+        "summary": "Update task",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "done": { "type": "boolean" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Updated task object" },
+          "400": { "description": "Invalid payload" },
+          "404": { "description": "Task not found" }
+        }
+      },
+      "delete": {
+        "summary": "Delete task",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Task deleted successfully" },
+          "404": { "description": "Task not found" }
+        }
+      }
+    },
+    "/stats": {
+      "get": {
+        "summary": "Get database statistics",
+        "responses": {
+          "200": {
+            "description": "Task counts (total, done, open)"
+          }
+        }
+      }
+    },
+    "/reset": {
+      "post": {
+        "summary": "Reset database to initial seed tasks",
+        "responses": {
+          "200": {
+            "description": "Database reset to 3 initial seed tasks"
+          }
+        }
+      }
+    }
+  }
+}
