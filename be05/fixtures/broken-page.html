@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <ol class="row">
+    <!-- Valid Item -->
+    <li class="col-xs-6">
+      <article class="product_pod">
+        <div class="image_container">
+          <a href="valid-book_100/index.html"><img src="../img1.jpg"></a>
+        </div>
+        <p class="star-rating Two"></p>
+        <h3><a href="valid-book_100/index.html" title="Valid Book Title">Valid Book Title</a></h3>
+        <div class="product_price">
+          <p class="price_color">£19.99</p>
+          <p class="instock availability">In stock</p>
+        </div>
+      </article>
+    </li>
+    <!-- Broken Item 1: Missing price completely -->
+    <li class="col-xs-6">
+      <article class="product_pod">
+        <div class="image_container">
+          <a href="no-price-book_101/index.html"><img src="../img2.jpg"></a>
+        </div>
+        <p class="star-rating Four"></p>
+        <h3><a href="no-price-book_101/index.html">No Price Book</a></h3>
+        <div class="product_price">
+          <p class="instock availability">In stock</p>
+        </div>
+      </article>
+    </li>
+    <!-- Broken Item 2: Invalid non-numeric price -->
+    <li class="col-xs-6">
+      <article class="product_pod">
+        <div class="image_container">
+          <a href="bad-price-book_102/index.html"><img src="../img3.jpg"></a>
+        </div>
+        <p class="star-rating Five"></p>
+        <h3><a href="bad-price-book_102/index.html">Bad Price Book</a></h3>
+        <div class="product_price">
+          <p class="price_color">FREE_OR_INVALID</p>
+          <p class="instock availability">In stock</p>
+        </div>
+      </article>
+    </li>
+  </ol>
+</body>
+</html>
