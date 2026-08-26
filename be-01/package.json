@@ -1,0 +1,16 @@
+{
+  "name": "todo-crud-api",
+  "version": "1.0.0",
+  "description": "Build your first CRUD API assignment (BE-01)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": ["express", "crud", "api", "swagger"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "swagger-ui-express": "^5.0.1"
+  }
+}
