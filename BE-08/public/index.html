@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Report Generator | BE-08 SaaS Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header Navbar -->
+    <header class="navbar">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="brand">ReportForge</span>
+          <span class="badge">BE-08 A7 Pipeline</span>
+        </div>
+      </div>
+      <div class="system-status">
+        <span class="status-indicator"></span>
+        <span id="worker-status-text">Background Worker Active</span>
+      </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <main class="dashboard-grid">
+
+      <!-- Left Column: Generator Form & Live Job Monitor -->
+      <section class="left-panel">
+        
+        <!-- Report Generator Card -->
+        <div class="card glass">
+          <div class="card-header">
+            <h2>Generate PDF Report</h2>
+            <span class="subtitle">Select parameters to enqueue an asynchronous background job</span>
+          </div>
+
+          <form id="report-form" class="form-grid">
+            <div class="form-group">
+              <label for="report-type">Report Type</label>
+              <select id="report-type" class="input-control">
+                <option value="executive">Executive Performance (Financials + AI)</option>
+                <option value="ai">AI LLM SLA & Token Analytics</option>
+                <option value="financial">SaaS Revenue & Customer Ledger</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="range-days">Time Horizon</label>
+              <select id="range-days" class="input-control">
+                <option value="7">Last 7 Days</option>
+                <option value="30" selected>Last 30 Days</option>
+                <option value="90">Last 90 Days</option>
+              </select>
+            </div>
+
+            <button type="submit" id="btn-generate" class="btn btn-primary btn-glow">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+              <span>Enqueue Report Job</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Real-Time Job execution monitor -->
+        <div class="card glass job-monitor-card" id="job-monitor">
+          <div class="card-header flex-between">
+            <h3>Background Job Monitor</h3>
+            <span id="active-job-badge" class="badge-status badge-idle">Idle</span>
+          </div>
+
+          <div id="job-progress-container" class="job-progress-container hidden">
+            <div class="job-meta flex-between">
+              <span id="job-id-text" class="mono">job_123456</span>
+              <span id="job-progress-pct" class="mono-bold">0%</span>
+            </div>
+
+            <div class="progress-bar-track">
+              <div id="progress-bar-fill" class="progress-bar-fill" style="width: 0%"></div>
+            </div>
+
+            <div id="job-status-msg" class="job-status-msg">Waiting for worker pickup...</div>
+
+            <div id="job-download-area" class="job-download-area hidden">
+              <a id="btn-download-artifact" href="#" target="_blank" class="btn btn-success">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Download Generated PDF</span>
+              </a>
+              <button id="btn-preview-pdf" class="btn btn-secondary">Preview PDF</button>
+            </div>
+          </div>
+
+          <div id="job-empty-state" class="empty-state">
+            <p>No active job running. Click <strong>Enqueue Report Job</strong> above to trigger a new background task.</p>
+          </div>
+        </div>
+
+        <!-- Scheduled Reports Manager (Stretch Goal) -->
+        <div class="card glass">
+          <div class="card-header flex-between">
+            <h3>Scheduled Cron Jobs</h3>
+            <button id="btn-open-schedule-modal" class="btn btn-sm btn-outline">+ Add Schedule</button>
+          </div>
+
+          <div id="schedules-list" class="schedules-list">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Right Column: Data Summary & Artifact Archive -->
+      <section class="right-panel">
+        
+        <!-- Live SQL Aggregation KPI Summary -->
+        <div class="card glass">
+          <div class="card-header flex-between">
+            <h2>Live Data Aggregation Preview</h2>
+            <span class="tag">SQL Aggregation Engine</span>
+          </div>
+
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <div class="metric-title">Gross Revenue (30d)</div>
+              <div id="kpi-revenue" class="metric-value">$0.00</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-title">Total AI Token Usage</div>
+              <div id="kpi-tokens" class="metric-value">0</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-title">AI Uptime SLA</div>
+              <div id="kpi-sla" class="metric-value">100%</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-title">Total Transactions</div>
+              <div id="kpi-orders" class="metric-value">0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Generated PDF Artifacts History -->
+        <div class="card glass flex-1">
+          <div class="card-header flex-between">
+            <h2>Generated Artifacts History</h2>
+            <button id="btn-refresh-history" class="btn btn-sm btn-icon" title="Refresh list">↻</button>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Job ID</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                  <th>Size</th>
+                  <th>Pages</th>
+                  <th>Created At</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="jobs-table-body">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <!-- PDF Preview Modal -->
+  <div id="pdf-modal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content glass">
+      <div class="modal-header">
+        <h3 id="modal-title">PDF Report Preview</h3>
+        <button id="btn-close-modal" class="btn-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <iframe id="pdf-frame" src="" width="100%" height="550px"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Schedule Modal -->
+  <div id="schedule-modal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content glass modal-sm">
+      <div class="modal-header">
+        <h3>Add Scheduled Cron Report</h3>
+        <button id="btn-close-schedule-modal" class="btn-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="schedule-form" class="form-grid">
+          <div class="form-group">
+            <label for="sched-name">Schedule Name</label>
+            <input type="text" id="sched-name" class="input-control" placeholder="e.g. Daily Executive Report" required>
+          </div>
+          <div class="form-group">
+            <label for="sched-cron">Cron Expression</label>
+            <input type="text" id="sched-cron" class="input-control mono" placeholder="e.g. 0 0 * * *" value="0 0 * * *" required>
+            <small class="help-text">Standard 5-part cron syntax (minute hour day month weekday)</small>
+          </div>
+          <div class="form-group">
+            <label for="sched-type">Report Type</label>
+            <select id="sched-type" class="input-control">
+              <option value="executive">Executive Performance</option>
+              <option value="ai">AI Infrastructure SLA</option>
+              <option value="financial">SaaS Financials</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Create Schedule</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
