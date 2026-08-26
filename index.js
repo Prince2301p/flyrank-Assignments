@@ -29,9 +29,46 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-// GET /tasks - list all tasks
+// GET /tasks - list all tasks with optional ?done=true/false and ?search=term filtering
 app.get('/tasks', (req, res) => {
-  res.json(tasks);
+  let result = [...tasks];
+
+  // Filtering by done status
+  if (req.query.done !== undefined) {
+    const isDone = req.query.done.toLowerCase() === 'true';
+    result = result.filter(t => t.done === isDone);
+  }
+
+  // Searching title by keyword
+  if (req.query.search !== undefined && req.query.search.trim() !== '') {
+    const query = req.query.search.trim().toLowerCase();
+    result = result.filter(t => t.title.toLowerCase().includes(query));
+  }
+
+  res.json(result);
+});
+
+// GET /stats - statistics summary endpoint
+app.get('/stats', (req, res) => {
+  const total = tasks.length;
+  const done = tasks.filter(t => t.done).length;
+  const open = total - done;
+
+  res.json({
+    total,
+    done,
+    open
+  });
+});
+
+// POST /reset - restores initial seed tasks
+app.post('/reset', (req, res) => {
+  tasks = [
+    { id: 1, title: 'Buy groceries', done: false },
+    { id: 2, title: 'Read a book', done: true },
+    { id: 3, title: 'Write backend code', done: false }
+  ];
+  res.json({ message: 'Tasks reset to initial state', count: tasks.length });
 });
 
 // GET /tasks/:id - get single task by ID
