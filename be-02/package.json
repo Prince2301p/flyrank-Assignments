@@ -1,0 +1,26 @@
+{
+  "name": "be-02-connecting-to-database",
+  "version": "1.0.0",
+  "description": "SQLite persistent To-Do List CRUD API using Express and better-sqlite3",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test-api.js",
+    "stage4-sql": "node stage4-sql.js"
+  },
+  "keywords": [
+    "express",
+    "sqlite",
+    "better-sqlite3",
+    "crud",
+    "api",
+    "rest"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^11.8.1",
+    "express": "^4.21.2",
+    "swagger-ui-express": "^5.0.1"
+  }
+}
