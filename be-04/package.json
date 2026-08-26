@@ -1,0 +1,31 @@
+{
+  "name": "a3-containerize-stack",
+  "version": "1.0.0",
+  "description": "BE-04 Containerize your stack - Postgres, Redis, Express, Docker Compose, Repository Pattern",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "jest --detectOpenHandles"
+  },
+  "keywords": [
+    "docker",
+    "postgres",
+    "redis",
+    "express",
+    "repository-pattern",
+    "backend"
+  ],
+  "author": "Backend AI Engineering Student",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "ioredis": "^6.0.0",
+    "pg": "^8.23.0"
+  },
+  "devDependencies": {
+    "jest": "^30.4.2",
+    "supertest": "^7.2.2"
+  }
+}

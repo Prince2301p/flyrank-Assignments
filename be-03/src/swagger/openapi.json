@@ -1,0 +1,223 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Auth Login & Protect API",
+    "description": "Secure API built with Express and Supabase Auth, implementing JWT authentication, protected routes, and middleware verification.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/public/info": {
+      "get": {
+        "summary": "Read public information",
+        "description": "Unprotected public endpoint accessible to anyone.",
+        "responses": {
+          "200": {
+            "description": "Public message retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Welcome stranger! This info is public."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "summary": "Sign up new user",
+        "description": "Registers a new user with email and password via Supabase Auth.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "test@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "password123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "User registered successfully",
+                  "user": {
+                    "id": "123e4567-e89b-12d3-a456-426614174000",
+                    "email": "test@example.com"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (missing email/password or registration error)"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Authenticate user & return JWT",
+        "description": "Logs in user with email and password, returning Supabase access and refresh tokens.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "test@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "password123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login returning JWT access token",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Login successful",
+                  "access_token": "eyJhbGciOiJIUzI1Ni...",
+                  "refresh_token": "v1.mc...",
+                  "user": {
+                    "id": "123e4567-e89b-12d3-a456-426614174000",
+                    "email": "test@example.com"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing email or password"
+          },
+          "401": {
+            "description": "Invalid login credentials"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "Terminate user session",
+        "description": "Signs out user from Supabase session. Requires Bearer Token.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully logged out (No Content)"
+          },
+          "401": {
+            "description": "Unauthorized - Missing or invalid token"
+          }
+        }
+      }
+    },
+    "/protected/profile": {
+      "get": {
+        "summary": "Get authenticated user profile",
+        "description": "Protected endpoint returning private user profile data. Requires Bearer Token.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile data",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Profile retrieved successfully",
+                  "user": {
+                    "id": "123e4567-e89b-12d3-a456-426614174000",
+                    "email": "test@example.com",
+                    "created_at": "2026-08-26T12:00:00.000Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Token missing, malformed, invalid, or expired"
+          }
+        }
+      }
+    },
+    "/protected/dashboard": {
+      "get": {
+        "summary": "Get user dashboard data",
+        "description": "Secondary protected route verifying middleware reusability. Requires Bearer Token.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dashboard data",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Welcome to your private dashboard, test@example.com!",
+                  "user_id": "123e4567-e89b-12d3-a456-426614174000",
+                  "status": "Active"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Token missing, malformed, invalid, or expired"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Provide your Supabase JWT access token obtained from /auth/login"
+      }
+    }
+  }
+}

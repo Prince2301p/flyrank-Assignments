@@ -1,7 +1,4 @@
 node_modules/
-be-06/node_modules/
 package-lock.json
 *.log
 .DS_Store
-.env
-coverage/
