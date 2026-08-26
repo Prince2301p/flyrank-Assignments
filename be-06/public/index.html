@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BE-06 Background Job Processing & Queue Monitor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="logo-icon">⚡</div>
+        <div>
+          <h1>Async Job Queue & Worker Engine</h1>
+          <p class="subtitle">BE-06 Backend AI Engineering — HTTP 202 Accepted, Idempotency, Exponential Backoff & DLQ</p>
+        </div>
+      </div>
+      <div class="status-indicator">
+        <span class="pulse-dot"></span>
+        <span id="server-status-text">Queue Worker Online</span>
+      </div>
+    </header>
+
+    <!-- Metrics Bar -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <span class="metric-label">Active Queue</span>
+        <div class="metric-value" id="metric-queued">0</div>
+        <span class="metric-desc">Jobs waiting in queue</span>
+      </div>
+      <div class="metric-card processing">
+        <span class="metric-label">Processing</span>
+        <div class="metric-value" id="metric-processing">0</div>
+        <span class="metric-desc">Active background workers</span>
+      </div>
+      <div class="metric-card completed">
+        <span class="metric-label">Completed</span>
+        <div class="metric-value" id="metric-completed">0</div>
+        <span class="metric-desc">Successfully executed</span>
+      </div>
+      <div class="metric-card dlq">
+        <span class="metric-label">DLQ / Alerts</span>
+        <div class="metric-value" id="metric-dlq">0</div>
+        <span class="metric-desc">Failed after max retries</span>
+      </div>
+    </div>
+
+    <!-- Quick Presets -->
+    <div class="card preset-card">
+      <h3>🚀 Quick Verification Scenarios</h3>
+      <p class="section-desc">Click a scenario button to auto-execute and test queue behaviors:</p>
+      <div class="preset-buttons">
+        <button class="btn btn-secondary" onclick="runPresetScenario('fast')">
+          ⚡ 1. Instant 202 Accepted
+        </button>
+        <button class="btn btn-secondary" onclick="runPresetScenario('idempotency')">
+          🔁 2. Test Idempotency Key
+        </button>
+        <button class="btn btn-secondary" onclick="runPresetScenario('retry')">
+          💥 3. Test Backoff & Retries
+        </button>
+        <button class="btn btn-secondary" onclick="runPresetScenario('dlq')">
+          🚨 4. Exhaust Retries & Send to DLQ
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="main-grid">
+      
+      <!-- Left Column: Submit Job Form & Last 202 Response -->
+      <div class="column">
+        <div class="card">
+          <div class="card-header">
+            <h2>📨 Submit AI Background Job</h2>
+          </div>
+          <form id="job-form">
+            <div class="form-group">
+              <label for="taskType">Task Type</label>
+              <select id="taskType" class="form-control">
+                <option value="generate">Text Generation / AI Reasoning</option>
+                <option value="summarize">Document Summarization</option>
+                <option value="code-review">Automated Code Review</option>
+                <option value="sentiment">Sentiment & Emotion Analysis</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="prompt">Prompt Content</label>
+              <textarea id="prompt" class="form-control" rows="3" required placeholder="Enter AI prompt or text content to process in the background...">Summarize the design patterns for background queues, idempotency, and retries in Node.js backend systems.</textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group half">
+                <label for="processingTimeMs">Simulated Delay: <span id="delay-val">3000</span>ms</label>
+                <input type="range" id="processingTimeMs" min="1000" max="10000" step="500" value="3000" class="slider" oninput="document.getElementById('delay-val').innerText = this.value">
+              </div>
+              <div class="form-group half">
+                <label for="maxRetries">Max Retries</label>
+                <select id="maxRetries" class="form-control">
+                  <option value="1">1 Attempt (No Retry)</option>
+                  <option value="3" selected>3 Attempts (Exponential)</option>
+                  <option value="5">5 Attempts</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="checkbox-row">
+                <input type="checkbox" id="useIdempotency">
+                <label for="useIdempotency">Use Idempotency Key</label>
+                <button type="button" class="btn btn-sm btn-ghost" onclick="generateRandomIdempotencyKey()">Generate Key</button>
+              </div>
+              <input type="text" id="idempotencyKey" class="form-control code-font" placeholder="e.g. key-usr-9921-x" disabled>
+              <small class="help-text">Prevents duplicate execution if the client retries the same job request.</small>
+            </div>
+
+            <div class="form-group">
+              <div class="checkbox-row danger">
+                <input type="checkbox" id="simulateError">
+                <label for="simulateError">⚠️ Simulate AI Upstream Error (Forces Job Failure & Retries)</label>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary full-width" id="btn-submit">
+              <span>🚀 Dispatch Background Job</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- HTTP 202 Response Inspector -->
+        <div class="card response-card" id="response-inspector" style="display: none;">
+          <div class="card-header">
+            <h3>⚡ HTTP Response Received</h3>
+            <span class="badge badge-accepted" id="resp-status-badge">202 ACCEPTED</span>
+          </div>
+          <div class="response-meta">
+            <div><strong>HTTP Status:</strong> <span class="code-font" id="resp-status-code">202 Accepted</span></div>
+            <div><strong>Client Latency:</strong> <span id="resp-latency">8ms</span></div>
+            <div><strong>Job ID:</strong> <span class="code-font highlight" id="resp-job-id">-</span></div>
+            <div><strong>Status URL:</strong> <a href="#" id="resp-status-link" target="_blank" class="code-font link">/api/v1/jobs/...</a></div>
+          </div>
+          <div class="raw-json-wrapper">
+            <pre class="code-font" id="resp-json">{}</pre>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Live Job Queue & Alert Feed -->
+      <div class="column">
+        
+        <!-- Job Queue Section -->
+        <div class="card">
+          <div class="card-header">
+            <h2>📋 Background Job Monitor</h2>
+            <div class="filter-tabs">
+              <button class="tab active" onclick="filterJobs('all')">All</button>
+              <button class="tab" onclick="filterJobs('queued')">Queued</button>
+              <button class="tab" onclick="filterJobs('processing')">Processing</button>
+              <button class="tab" onclick="filterJobs('completed')">Completed</button>
+              <button class="tab" onclick="filterJobs('dlq')">DLQ</button>
+            </div>
+          </div>
+
+          <div id="jobs-container" class="jobs-list">
+            <div class="empty-state">No background jobs created yet. Submit a job or run a scenario!</div>
+          </div>
+        </div>
+
+        <!-- Alert Feed Section -->
+        <div class="card alert-card">
+          <div class="card-header">
+            <h2>🚨 DLQ & Failure Alert Feed</h2>
+            <button class="btn btn-sm btn-ghost" onclick="clearAlerts()">Clear Alerts</button>
+          </div>
+          <div id="alerts-container" class="alerts-list">
+            <div class="empty-state">No DLQ or system alerts recorded. System operating normally.</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

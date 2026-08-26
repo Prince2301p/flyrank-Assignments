@@ -1,0 +1,27 @@
+{
+  "name": "be-06-background-job-system",
+  "version": "1.0.0",
+  "description": "BE-06 Assignment: Background Job System with HTTP 202, Workers, Idempotency, Retries, Alerts & DLQ",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "test": "node test/backgroundJob.test.js"
+  },
+  "keywords": [
+    "background-jobs",
+    "async",
+    "idempotency",
+    "dlq",
+    "retries",
+    "ai-engineering"
+  ],
+  "author": "Backend AI Engineering",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "uuid": "^9.0.1"
+  }
+}

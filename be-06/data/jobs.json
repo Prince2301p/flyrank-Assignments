@@ -1,0 +1,286 @@
+[
+  {
+    "id": "job_83b9f2df",
+    "idempotencyKey": null,
+    "payload": {
+      "taskType": "summarize",
+      "prompt": "Testing instant 202 response performance",
+      "simulateError": false,
+      "processingTimeMs": 1500
+    },
+    "status": "completed",
+    "progress": 100,
+    "progressMessage": "AI job completed successfully.",
+    "attempts": 1,
+    "maxRetries": 3,
+    "result": {
+      "success": true,
+      "taskType": "summarize",
+      "prompt": "Testing instant 202 response performance",
+      "result": {
+        "summary": "Summary of prompt (40 chars): The input highlights key technical requirements for building scalable background workers with idempotency, exponential backoff, and DLQ handling.",
+        "keyTakeaways": [
+          "HTTP 202 Accepted allows instant caller unblocking.",
+          "Idempotency keys prevent duplicate processing on retries.",
+          "Exponential backoff prevents cascading service failures.",
+          "DLQ and alert integration provide failure observability."
+        ],
+        "confidenceScore": 0.98
+      },
+      "executionTimeMs": 1734,
+      "completedAt": "2026-08-26T15:16:44.243Z"
+    },
+    "error": null,
+    "errorHistory": [],
+    "createdAt": "2026-08-26T15:16:42.502Z",
+    "startedAt": "2026-08-26T15:16:42.508Z",
+    "completedAt": "2026-08-26T15:16:44.243Z",
+    "nextAttemptAt": null
+  },
+  {
+    "id": "job_017b8226",
+    "idempotencyKey": "test-key-1787757404386",
+    "payload": {
+      "taskType": "generate",
+      "prompt": "First dispatch with idempotency key",
+      "simulateError": false,
+      "processingTimeMs": 2000
+    },
+    "status": "completed",
+    "progress": 100,
+    "progressMessage": "AI job completed successfully.",
+    "attempts": 1,
+    "maxRetries": 3,
+    "result": {
+      "success": true,
+      "taskType": "generate",
+      "prompt": "First dispatch with idempotency key",
+      "result": {
+        "generatedText": "[AI Generated Response] Processed prompt: \"First dispatch with idempotency key\". Background worker successfully executed task out-of-band in 2247ms without blocking the client HTTP connection!",
+        "tokensUsed": 212,
+        "modelName": "Antigravity-v2-AI-Engine"
+      },
+      "executionTimeMs": 2247,
+      "completedAt": "2026-08-26T15:16:46.638Z"
+    },
+    "error": null,
+    "errorHistory": [],
+    "createdAt": "2026-08-26T15:16:44.388Z",
+    "startedAt": "2026-08-26T15:16:44.390Z",
+    "completedAt": "2026-08-26T15:16:46.638Z",
+    "nextAttemptAt": null
+  },
+  {
+    "id": "job_5e4f82f0",
+    "idempotencyKey": null,
+    "payload": {
+      "taskType": "generate",
+      "prompt": "Testing automatic retry on simulated error",
+      "simulateError": true,
+      "processingTimeMs": 400
+    },
+    "status": "dlq",
+    "progress": 40,
+    "progressMessage": "Job permanently failed after 3 attempts. Moved to Dead Letter Queue (DLQ).",
+    "attempts": 3,
+    "maxRetries": 3,
+    "result": null,
+    "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded.",
+    "errorHistory": [
+      {
+        "attempt": 1,
+        "timestamp": "2026-08-26T15:16:44.728Z",
+        "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded."
+      },
+      {
+        "attempt": 2,
+        "timestamp": "2026-08-26T15:16:46.356Z",
+        "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded."
+      },
+      {
+        "attempt": 3,
+        "timestamp": "2026-08-26T15:16:48.953Z",
+        "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded."
+      }
+    ],
+    "createdAt": "2026-08-26T15:16:44.396Z",
+    "startedAt": "2026-08-26T15:16:44.398Z",
+    "completedAt": "2026-08-26T15:16:48.953Z",
+    "nextAttemptAt": "2026-08-26T15:16:48.432Z"
+  },
+  {
+    "id": "job_3f86a762",
+    "idempotencyKey": null,
+    "payload": {
+      "taskType": "generate",
+      "prompt": "Testing DLQ transition",
+      "simulateError": true,
+      "processingTimeMs": 200
+    },
+    "status": "dlq",
+    "progress": 40,
+    "progressMessage": "Job permanently failed after 1 attempts. Moved to Dead Letter Queue (DLQ).",
+    "attempts": 1,
+    "maxRetries": 1,
+    "result": null,
+    "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded.",
+    "errorHistory": [
+      {
+        "attempt": 1,
+        "timestamp": "2026-08-26T15:16:45.604Z",
+        "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded."
+      },
+      {
+        "attempt": 1,
+        "timestamp": "2026-08-26T15:16:46.545Z",
+        "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded."
+      }
+    ],
+    "createdAt": "2026-08-26T15:16:45.411Z",
+    "startedAt": "2026-08-26T15:16:45.415Z",
+    "completedAt": "2026-08-26T15:16:46.545Z",
+    "nextAttemptAt": null
+  },
+  {
+    "id": "job_8371740d",
+    "idempotencyKey": null,
+    "payload": {
+      "taskType": "summarize",
+      "prompt": "Testing instant 202 response performance",
+      "simulateError": false,
+      "processingTimeMs": 1500
+    },
+    "status": "completed",
+    "progress": 100,
+    "progressMessage": "AI job completed successfully.",
+    "attempts": 1,
+    "maxRetries": 3,
+    "result": {
+      "success": true,
+      "taskType": "summarize",
+      "prompt": "Testing instant 202 response performance",
+      "result": {
+        "summary": "Summary of prompt (40 chars): The input highlights key technical requirements for building scalable background workers with idempotency, exponential backoff, and DLQ handling.",
+        "keyTakeaways": [
+          "HTTP 202 Accepted allows instant caller unblocking.",
+          "Idempotency keys prevent duplicate processing on retries.",
+          "Exponential backoff prevents cascading service failures.",
+          "DLQ and alert integration provide failure observability."
+        ],
+        "confidenceScore": 0.98
+      },
+      "executionTimeMs": 1764,
+      "completedAt": "2026-08-26T15:17:38.964Z"
+    },
+    "error": null,
+    "errorHistory": [],
+    "createdAt": "2026-08-26T15:17:37.195Z",
+    "startedAt": "2026-08-26T15:17:37.199Z",
+    "completedAt": "2026-08-26T15:17:38.965Z",
+    "nextAttemptAt": null
+  },
+  {
+    "id": "job_397f3cb4",
+    "idempotencyKey": "test-key-1787757459079",
+    "payload": {
+      "taskType": "generate",
+      "prompt": "First dispatch with idempotency key",
+      "simulateError": false,
+      "processingTimeMs": 2000
+    },
+    "status": "completed",
+    "progress": 100,
+    "progressMessage": "AI job completed successfully.",
+    "attempts": 1,
+    "maxRetries": 3,
+    "result": {
+      "success": true,
+      "taskType": "generate",
+      "prompt": "First dispatch with idempotency key",
+      "result": {
+        "generatedText": "[AI Generated Response] Processed prompt: \"First dispatch with idempotency key\". Background worker successfully executed task out-of-band in 2249ms without blocking the client HTTP connection!",
+        "tokensUsed": 137,
+        "modelName": "Antigravity-v2-AI-Engine"
+      },
+      "executionTimeMs": 2249,
+      "completedAt": "2026-08-26T15:17:41.337Z"
+    },
+    "error": null,
+    "errorHistory": [],
+    "createdAt": "2026-08-26T15:17:39.083Z",
+    "startedAt": "2026-08-26T15:17:39.087Z",
+    "completedAt": "2026-08-26T15:17:41.338Z",
+    "nextAttemptAt": null
+  },
+  {
+    "id": "job_283d2991",
+    "idempotencyKey": null,
+    "payload": {
+      "taskType": "generate",
+      "prompt": "Testing automatic retry on simulated error",
+      "simulateError": true,
+      "processingTimeMs": 400
+    },
+    "status": "dlq",
+    "progress": 40,
+    "progressMessage": "Job permanently failed after 3 attempts. Moved to Dead Letter Queue (DLQ).",
+    "attempts": 3,
+    "maxRetries": 3,
+    "result": null,
+    "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded.",
+    "errorHistory": [
+      {
+        "attempt": 1,
+        "timestamp": "2026-08-26T15:17:39.415Z",
+        "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded."
+      },
+      {
+        "attempt": 2,
+        "timestamp": "2026-08-26T15:17:40.936Z",
+        "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded."
+      },
+      {
+        "attempt": 3,
+        "timestamp": "2026-08-26T15:17:43.382Z",
+        "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded."
+      }
+    ],
+    "createdAt": "2026-08-26T15:17:39.095Z",
+    "startedAt": "2026-08-26T15:17:39.096Z",
+    "completedAt": "2026-08-26T15:17:43.382Z",
+    "nextAttemptAt": "2026-08-26T15:17:42.948Z"
+  },
+  {
+    "id": "job_42296ec9",
+    "idempotencyKey": null,
+    "payload": {
+      "taskType": "generate",
+      "prompt": "Testing DLQ transition",
+      "simulateError": true,
+      "processingTimeMs": 200
+    },
+    "status": "dlq",
+    "progress": 40,
+    "progressMessage": "Job permanently failed after 1 attempts. Moved to Dead Letter Queue (DLQ).",
+    "attempts": 1,
+    "maxRetries": 1,
+    "result": null,
+    "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded.",
+    "errorHistory": [
+      {
+        "attempt": 1,
+        "timestamp": "2026-08-26T15:17:40.291Z",
+        "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded."
+      },
+      {
+        "attempt": 1,
+        "timestamp": "2026-08-26T15:17:41.119Z",
+        "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded."
+      }
+    ],
+    "createdAt": "2026-08-26T15:17:40.110Z",
+    "startedAt": "2026-08-26T15:17:40.112Z",
+    "completedAt": "2026-08-26T15:17:41.119Z",
+    "nextAttemptAt": null
+  }
+]

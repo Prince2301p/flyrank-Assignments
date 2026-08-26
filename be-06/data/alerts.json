@@ -1,0 +1,162 @@
+[
+  {
+    "id": "alert-1787757463382-d1vm3",
+    "timestamp": "2026-08-26T15:17:43.382Z",
+    "type": "DLQ_JOB",
+    "severity": "CRITICAL",
+    "message": "Job job_283d2991 exhausted all 3 retries and moved to Dead Letter Queue (DLQ).",
+    "metadata": {
+      "jobId": "job_283d2991",
+      "attempts": 3,
+      "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded.",
+      "payload": {
+        "taskType": "generate",
+        "prompt": "Testing automatic retry on simulated error",
+        "simulateError": true,
+        "processingTimeMs": 400
+      }
+    }
+  },
+  {
+    "id": "alert-1787757461119-h6toa",
+    "timestamp": "2026-08-26T15:17:41.120Z",
+    "type": "DLQ_JOB",
+    "severity": "CRITICAL",
+    "message": "Job job_42296ec9 exhausted all 1 retries and moved to Dead Letter Queue (DLQ).",
+    "metadata": {
+      "jobId": "job_42296ec9",
+      "attempts": 1,
+      "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded.",
+      "payload": {
+        "taskType": "generate",
+        "prompt": "Testing DLQ transition",
+        "simulateError": true,
+        "processingTimeMs": 200
+      }
+    }
+  },
+  {
+    "id": "alert-1787757460936-tqwcb",
+    "timestamp": "2026-08-26T15:17:40.936Z",
+    "type": "JOB_RETRY",
+    "severity": "WARNING",
+    "message": "Job job_283d2991 failed on attempt 2/3. Will retry in 2.0s.",
+    "metadata": {
+      "jobId": "job_283d2991",
+      "attempt": 2,
+      "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded.",
+      "retryAt": "2026-08-26T15:17:42.948Z"
+    }
+  },
+  {
+    "id": "alert-1787757460291-fqvaq",
+    "timestamp": "2026-08-26T15:17:40.291Z",
+    "type": "DLQ_JOB",
+    "severity": "CRITICAL",
+    "message": "Job job_42296ec9 exhausted all 1 retries and moved to Dead Letter Queue (DLQ).",
+    "metadata": {
+      "jobId": "job_42296ec9",
+      "attempts": 1,
+      "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded.",
+      "payload": {
+        "taskType": "generate",
+        "prompt": "Testing DLQ transition",
+        "simulateError": true,
+        "processingTimeMs": 200
+      }
+    }
+  },
+  {
+    "id": "alert-1787757459416-qgftj",
+    "timestamp": "2026-08-26T15:17:39.416Z",
+    "type": "JOB_RETRY",
+    "severity": "WARNING",
+    "message": "Job job_283d2991 failed on attempt 1/3. Will retry in 1.0s.",
+    "metadata": {
+      "jobId": "job_283d2991",
+      "attempt": 1,
+      "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded.",
+      "retryAt": "2026-08-26T15:17:40.457Z"
+    }
+  },
+  {
+    "id": "alert-1787757408953-riw44",
+    "timestamp": "2026-08-26T15:16:48.953Z",
+    "type": "DLQ_JOB",
+    "severity": "CRITICAL",
+    "message": "Job job_5e4f82f0 exhausted all 3 retries and moved to Dead Letter Queue (DLQ).",
+    "metadata": {
+      "jobId": "job_5e4f82f0",
+      "attempts": 3,
+      "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded.",
+      "payload": {
+        "taskType": "generate",
+        "prompt": "Testing automatic retry on simulated error",
+        "simulateError": true,
+        "processingTimeMs": 400
+      }
+    }
+  },
+  {
+    "id": "alert-1787757406545-ays41",
+    "timestamp": "2026-08-26T15:16:46.545Z",
+    "type": "DLQ_JOB",
+    "severity": "CRITICAL",
+    "message": "Job job_3f86a762 exhausted all 1 retries and moved to Dead Letter Queue (DLQ).",
+    "metadata": {
+      "jobId": "job_3f86a762",
+      "attempts": 1,
+      "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded.",
+      "payload": {
+        "taskType": "generate",
+        "prompt": "Testing DLQ transition",
+        "simulateError": true,
+        "processingTimeMs": 200
+      }
+    }
+  },
+  {
+    "id": "alert-1787757406357-hksfp",
+    "timestamp": "2026-08-26T15:16:46.357Z",
+    "type": "JOB_RETRY",
+    "severity": "WARNING",
+    "message": "Job job_5e4f82f0 failed on attempt 2/3. Will retry in 2.1s.",
+    "metadata": {
+      "jobId": "job_5e4f82f0",
+      "attempt": 2,
+      "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded.",
+      "retryAt": "2026-08-26T15:16:48.432Z"
+    }
+  },
+  {
+    "id": "alert-1787757405604-33jma",
+    "timestamp": "2026-08-26T15:16:45.604Z",
+    "type": "DLQ_JOB",
+    "severity": "CRITICAL",
+    "message": "Job job_3f86a762 exhausted all 1 retries and moved to Dead Letter Queue (DLQ).",
+    "metadata": {
+      "jobId": "job_3f86a762",
+      "attempts": 1,
+      "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded.",
+      "payload": {
+        "taskType": "generate",
+        "prompt": "Testing DLQ transition",
+        "simulateError": true,
+        "processingTimeMs": 200
+      }
+    }
+  },
+  {
+    "id": "alert-1787757404730-qo3d0",
+    "timestamp": "2026-08-26T15:16:44.730Z",
+    "type": "JOB_RETRY",
+    "severity": "WARNING",
+    "message": "Job job_5e4f82f0 failed on attempt 1/3. Will retry in 1.3s.",
+    "metadata": {
+      "jobId": "job_5e4f82f0",
+      "attempt": 1,
+      "error": "[Simulated AI API Error 503] Upstream AI inference engine overloaded / rate limit exceeded.",
+      "retryAt": "2026-08-26T15:16:45.989Z"
+    }
+  }
+]
